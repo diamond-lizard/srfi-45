@@ -5,7 +5,7 @@ SALMONELLA		:= salmonella
 SALMONELLA_LOG		:= salmonella.log
 SALMONELLA_LOG_VIEWER	:= salmonella-log-viewer
 TEST_NEW_EGG		:= test-new-egg
-SRFI   			:= srfi-111.scm
+SRFI   			:= srfi-45.scm
 
 all: test
 
