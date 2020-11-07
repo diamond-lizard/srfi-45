@@ -1,0 +1,10 @@
+;;; srfi-45.egg -*- Scheme -*- vim: ft=scheme:
+
+((author "André van Tonder, for Chicken 4 by [[kon lovett]], for Chicken 5 by [[Sergey Goldgaber]]")
+ (maintainer "Sergey Goldgaber")
+ (synopsis "SRFI-45: Primitives for Expressing Iterative Lazy Algorithms")
+ (category lang-exts)
+ (dependencies r7rs)
+ (test-dependencies test)
+ (license "BSD")
+ (components (extension srfi-45)))
