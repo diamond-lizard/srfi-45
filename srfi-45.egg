@@ -4,7 +4,7 @@
  (maintainer "Sergey Goldgaber")
  (synopsis "SRFI-45: Primitives for Expressing Iterative Lazy Algorithms")
  (category lang-exts)
- (dependencies r7rs)
+ (dependencies check-errors r7rs)
  (test-dependencies test)
  (license "BSD")
  (components (extension srfi-45)))

@@ -4,7 +4,7 @@
 
 (import
   (rename scheme (force r5rs:force) (delay r5rs:delay))
-  (rename chicken (promise? r5rs:promise?)))
+  (rename chicken.base (promise? r5rs:promise?)))
 
 (require-extension srfi-45)
 

@@ -28,11 +28,11 @@
     lazy-strict)
 
   (import
+    (chicken format)
+    check-errors
+    (chicken platform)
     (rename scheme (force r5rs:force) (delay r5rs:delay))
-    (rename chicken (promise? r5rs:promise?))
-    (only extras fprintf))
-
-  (require-extension type-errors)
+    (rename chicken.base (promise? r5rs:promise?)))
 
   (include "chicken-primitive-object-inlines")
 
