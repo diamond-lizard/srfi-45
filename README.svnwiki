@@ -1,0 +1,150 @@
+[[tags: egg]]
+
+== srfi-45
+
+Primitives for Expressing Iterative Lazy Algorithms
+
+[[toc:]]
+
+
+== Documentation
+
+Extends the interpretation of a promise to include ''lazy'' and ''eager''
+promises.
+
+For more information see [[http://srfi.schemers.org/srfi-45/srfi-45.html|SRFI 45]].
+
+
+=== lazy
+
+<macro>(lazy EXPRESSION) => promise</macro>
+
+Returns a promise for {{EXPRESSION}}, which must evaluate to a SRFI 45 promise.
+(See {{lazy-strict}}.}
+
+The promise will be iteratively forced, overwriting the promise at each step
+before the next iteration, so as to avoid storage leaks.
+
+=== lazy-strict
+
+<procedure>(lazy-strict [STRICT?]) => boolean</procedure>
+
+The body {{EXPRESSION}} of a {{lazy}} promise must produce a result of type
+{{promise}} according to SRFI 45. This is the default behavior of this
+implementation. To accept a more lenient interpretation call with a value of
+{{#f}} for {{STRICT?}}.
+
+The {{"improper use of `lazy'"}} error from {{force}} serves notice that a
+lazy expression was not of the correct type.
+
+=== eager
+
+<macro>(eager EXPRESSION) => promise</macro>
+
+Returns a promise but immediately evaluates {{EXPRESSION}}.
+
+=== force
+
+<procedure>(force PROMISE) => OBJECT</procedure>
+
+Returns the result of the evaluation of {{PROMISE}}. When {{PROMISE}} is an R5RS
+promise an R5RS {{force}} is performed and when {{PROMISE}} is not a promise it
+is the result.
+
+=== delay
+
+<macro>(delay EXPRESSION) => promise</macro>
+
+Returns a SRFI-45 promise, a delayed evaluation of {{EXPRESSION}}.
+
+=== lazy-promise?
+
+<procedure>(lazy-promise? OBJECT) => boolean</procedure>
+
+=== eager-promise?
+
+<procedure>(eager-promise? OBJECT) => boolean</procedure>
+
+=== recursive-promise?
+
+<procedure>(recursive-promise? OBJECT) => boolean</procedure>
+
+Is the {{OBJECT}} a recursive-promise; an eager or lazy promise?
+
+=== promise?
+
+<procedure>(promise? OBJECT) => boolean</procedure>
+
+Some kind of promise? An R5RS promise or a recursive-promise.
+
+
+== Usage
+
+<enscript language=scheme>
+(module foo (...)
+  ; Allow access to the original API and stop those annoying
+  ; redefined messages.
+  (import
+    (rename scheme (force r5rs:force) (delay r5rs:delay))
+    (rename chicken (promise? r5rs:promise?))
+    ...)
+  (use srfi-45)
+  ... code that can use R5RS and SRFI 45 promises ...
+)
+</enscript>
+
+
+== Notes
+
+* Supports multiple values for an eager promise and when {{(lazy-strict)}}
+is {{#f}} for a lazy promise.
+
+* If compiled with the feature {{srfi-45-paranoia}} defined then extra
+sanity checks are enabled.
+
+* The built-in routines are ''not'' rebound. This is purely a module
+implementation. As such the built-in {{promise?}} will not detect a
+recursive-promise as a promise. Do not allow these abstractions to
+''leak'' into unsuspecting contexts.
+
+
+== Requirements
+
+None
+
+
+== Author
+
+[[/users/kon-lovett|Kon Lovett]]
+
+
+== Version history
+
+; 3.1.0 : Added {{lazy-strict}} and compile-time feature {{srfi-45-paranoia}}. Better R5RS promise support by {{lazy}}.
+; 3.0.0 : Redefines {{delay}}. Removed {{d-lay}} and {{recursive-delay}}.
+; 2.2.0 : Bug fix for ''lazy'' R5RS promise in {{force}}. [Reported by Derrell Piper]
+; 2.1.0 : Bug fix for ''too eager'' {{force}}. Removed "box" extension dependency.
+; 2.0.0 : Chicken 4 release.
+
+
+== License
+
+Copyright (C) 2009 Kon Lovett.  All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the Software),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED ASIS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
